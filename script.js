@@ -1,74 +1,58 @@
-// Wrap all code that interacts with the DOM in a call to jQuery to ensure that
-// the code isn't run until the browser has finished rendering all the elements
-// in the html.
-var now = dayjs().format('hA');
+// Display today's day and date
+var todayDate = dayjs().format('MMM DD, YYYY');
+$("#currentDay").html(todayDate);
 
-var atTime = 
+$(document).ready(function () {
+    // saveBtn click listener 
+    $(".saveBtn").on("click", function () {
+        // Get value of nearby description class element
+        var userText = $(this).siblings(".description").val();
+        var time = $(this).parent().attr("id");
 
-console.log(now);
+        // Save user input into local storage
+        localStorage.setItem(time, userText);
+    })
+   
+    function classUpdate() {
+        //get currnet hour of the day.
+        var timeNow = dayjs().hour();
 
-var array = $('.hour').map(function(){
-  return $.trim($(this).text());
-  }).get();
+        // loop over time blocks
+        $(".time-block").each(function () {
+            var blockTime = $(this).attr("id");
+           
 
-function compareTime() {
-    for ( i=0; i < array.length; i++){
-      if (dayjs().hour(array[i]) < now) {
-        console.log("this is less than")
-      }
-      else if (dayjs().hour(array[i]) == now) {
-        console.log("this is equal")
-      }
-      else {
-        console.log("This is greater than")
-        console.log(dayjs().hour(array[i]))
-      }
+            // Updates class for elements based on conditions and current time. 
+            if (blockTime < timeNow) {
+                $(this).removeClass("future");
+                $(this).removeClass("present");
+                $(this).addClass("past");
+            }
+            else if (blockTime === timeNow) {
+                $(this).removeClass("past");
+                $(this).removeClass("future");
+                $(this).addClass("present");
+            }
+            else {
+                $(this).removeClass("present");
+                $(this).removeClass("past");
+                $(this).addClass("future");
+
+            }
+        })
     }
-}
 
-compareTime();
+    // Get item(s) from local storage if any
+    $("#8 .description").val(localStorage.getItem("8"));
+    $("#9 .description").val(localStorage.getItem("9"));
+    $("#10 .description").val(localStorage.getItem("10"));
+    $("#11 .description").val(localStorage.getItem("11"));
+    $("#12 .description").val(localStorage.getItem("12"));
+    $("#13 .description").val(localStorage.getItem("13"));
+    $("#14 .description").val(localStorage.getItem("14"));
+    $("#15 .description").val(localStorage.getItem("15"));
+    $("#16 .description").val(localStorage.getItem("16"));
+    $("#17 .description").val(localStorage.getItem("17"));
 
-// $(function () {
-
-
-//   for (i = 0 ; i < timeArray.length ; i++) {
-//     if (timeArray[i] < (now)){
-//       $(this.).css("row time-block past");
-//     }
-//     else if (timeArray[i] == (now)){
-//       $(this.).css("row time-block present");
-//     }
-//     else {
-//       $(this.css("row time-block future");
-//     }
-//   }
-
-
-
-
-// })
-
-console.log(array);
-
-$(function () {
-  // TODO: Add a listener for click events on the save button. This code should
-
-
-  // use the id in the containing time-block as a key to save the user input in
-  // local storage. HINT: What does `this` reference in the click listener
-  // function? How can DOM traversal be used to get the "hour-x" id of the
-  // time-block containing the button that was clicked? How might the id be
-  // useful when saving the description in local storage?
-  //
-  // TODO: Add code to apply the past, present, or future class to each time
-  // block by comparing the id to the current hour. HINTS: How can the id
-  // attribute of each time-block be used to conditionally add or remove the
-  // past, present, and future classes? How can Day.js be used to get the
-  // current hour in 24-hour time?
-  //
-  // TODO: Add code to get any user input that was saved in localStorage and set
-  // the values of the corresponding textarea elements. HINT: How can the id
-  // attribute of each time-block be used to do this?
-  //
-  // TODO: Add code to display the current date in the header of the page.
-});
+    classUpdate();
+})
