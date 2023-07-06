@@ -19,7 +19,9 @@ $(document).ready(function () {
 
         // loop over time blocks
         $(".time-block").each(function () {
-            var blockTime = $(this).attr("id");
+            var blockTime = parseInt($(this).attr("id"));
+            console.log(blockTime);
+            console.log(timeNow);
            
 
             // Updates class for elements based on conditions and current time. 
